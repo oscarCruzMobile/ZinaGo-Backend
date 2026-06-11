@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16
+    container_name: zinago_db
+    environment:
+      POSTGRES_DB: zinagobd
+      POSTGRES_USER: zinago
+      POSTGRES_PASSWORD: zinago123
+    ports:
+    - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    #  Esto avisa cuando Postgres ya acepta conexiones
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zinago -d zinagobd"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    container_name: zinago_backend
+    ports:
+      - "8080:8080"
+    #  Espera a que el healthcheck de la DB sea exitoso
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/zinagobd
+      SPRING_DATASOURCE_USERNAME: zinago
+      SPRING_DATASOURCE_PASSWORD: zinago123
+      SPRING_PROFILES_ACTIVE: docker
+
+volumes:
+  postgres_data:
