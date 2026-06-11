@@ -20,12 +20,22 @@ repositories {
 }
 
 dependencies {
+	implementation("org.springframework.boot:spring-boot-starter-web")
+
+	// 🗄️ Base de Datos y Persistencia (¡La que te hacía falta!)
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+
+	// 🧠 Soporte de Kotlin para Spring y Jackson
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("tools.jackson.module:jackson-module-kotlin")
-	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+
+	// 🐘 Driver de PostgreSQL para conectar con Docker
+	runtimeOnly("org.postgresql:postgresql")
+
+	// 🧪 Pruebas unitarias y de integración
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
